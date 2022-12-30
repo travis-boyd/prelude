@@ -47,7 +47,7 @@
 (require 'prelude-helm) ;; Interface for narrowing and search
 (require 'prelude-helm-everywhere) ;; Enable Helm everywhere
 (require 'prelude-company)
-;; (require 'prelude-key-chord) ;; Binds useful features to key combinations
+(require 'prelude-key-chord) ;; Binds useful features to key combinations
 
 ;;; Vim emulation
 ;;
@@ -87,7 +87,7 @@
 (require 'prelude-python)
 ;; (require 'prelude-racket)
 ;; (require 'prelude-ruby)
-;; (require 'prelude-rust)
+(require 'prelude-rust)
 ;; (require 'prelude-scala)
 ;; (require 'prelude-scheme)
 (require 'prelude-shell)
@@ -98,7 +98,7 @@
 (require 'prelude-yaml)
 
 ;;; Misc
-(require 'prelude-erc) ;; A popular Emacs IRC client (useful if you're still into Freenode)
+;; (require 'prelude-erc) ;; A popular Emacs IRC client (useful if you're still into Freenode)
 
 (provide 'prelude-modules)
 ;;; prelude-modules.el ends here
