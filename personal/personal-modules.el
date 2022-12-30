@@ -24,3 +24,5 @@
                     "#+title: ${title}\n#+date: %u\n#+lastmod: \n\n")
          ))
       time-stamp-start "#\\+lastmod: [\t]*")
+(require 'circe)
+(setq circe-network-options '(("Bitlbee" :nick "trav")))
