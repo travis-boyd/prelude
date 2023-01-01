@@ -1,5 +1,5 @@
 (org-babel-do-load-languages
- 'org-babel-load-languages '((C . t)))
+ 'org-babel-load-languages '((C . t) (python . t)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
