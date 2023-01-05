@@ -34,3 +34,4 @@ eln-cache/
 *.db
 .org-id-locations
 /personal/windows-init.el
+/personal/macbook-init.el
