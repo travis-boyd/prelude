@@ -1,9 +1,6 @@
 ;;; ORG-ROAM
 (use-package org-roam
   :ensure t
-  :custom
-  (org-roam-directory (file-truename "~/org-roam/"))
-  (org-roam-db-location (expand-file-name (concat "org-roam." "macbook" ".db") org-roam-directory))
   :bind (("C-c m l" . org-roam-buffer-toggle)
          ("C-c m f" . org-roam-node-find)
          ("C-c m g" . org-roam-graph)
