@@ -32,3 +32,8 @@
         whisper-model "base"
         whisper-language "en"
         whisper-translate nil))
+
+
+;;; virtualenvwrapper
+(require 'virtualenvwrapper)
+(setq venv-location '("d:/Code/whisper/venv/"))
