@@ -33,14 +33,14 @@
 (require 'circe)
 (setq circe-network-options '(("Bitlbee" :nick "trav")))
 
-(use-package whisper
-  :load-path ~/.emacs.d/personal/whisper.el
-  :bind ("C-H-r" . whisper-run)
-  :config
-  (setq whisper-install-directory "/tmp/"
-        whisper-model "base"
-        whisper-language "en"
-        whisper-translate nil))
+;; (use-package whisper
+;;   :load-path ~/.emacs.d/personal/whisper.el
+;;   :bind ("C-H-r" . whisper-run)
+;;   :config
+;;   (setq whisper-install-directory "/tmp/"
+;;         whisper-model "base"
+;;         whisper-language "en"
+;;         whisper-translate nil))
 
 
 ;;; virtualenvwrapper
