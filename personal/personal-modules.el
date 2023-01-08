@@ -7,7 +7,12 @@
          ("C-c m i" . org-roam-node-insert)
          ("C-c m c" . org-roam-capture)
          ;; Dailies
-         ("C-c m j" . org-roam-dailies-capture-today))
+         :map org-mode-map
+         ("C-M-i" . completion-at-point)
+         :map org-roam-dailies-map
+         ("Y" . org-roam-dailies-capture-yesterday))
+  :bind-keymap
+  ("C-c m d" . org-roam-dailies-map)
   :custom
   (org-roam-capture-templates
    '(("d" "default" plain
@@ -17,6 +22,7 @@
      )
    )
   :config
+  (require 'org-roam-dailies) ;; ensure the keymap is available
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode)
