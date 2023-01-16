@@ -1,7 +1,28 @@
 * Visual Tweaks
+
+word wrap everywhere! until I learn the hard way why it's not default
 #+begin_src emacs-lisp
   (global-visual-line-mode t)
-  (setq whitespace-line-column 250)
+#+end_src
+
+Hide the mark-up characters for *bold* (=*bold*=), /italics/ (=/italics/=) etc
+#+begin_src emacs-lisp
+  (setq org-hide-emphasis-markers t)
+#+end_src
+
+
+Font-lock substitution to change list markers (replacing - with a dot)
+#+begin_src emacs-lisp
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+#+end_src
+
+Replaces all headlines markers with fancy Unicode bullets
+#+begin_src emacs-lisp
+  (use-package org-bullets
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
 
 * ORG-ROAM
@@ -16,7 +37,7 @@
          ("C-c m o" . org-id-get-create)
          ;; Dailies
          :map org-mode-map
-         ("C-M-i" . completion-at-point)
+         ("C-M-g" . completion-at-point)
          :map org-roam-dailies-map
          ("Y" . org-roam-dailies-capture-yesterday))
   :bind-keymap
@@ -38,16 +59,21 @@
       :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
      ("l" "louise" entry "* %<%I:%M %p>:\n %?"
       :if-new (file+head "%<%Y-%m-%d> - Louise.org" "#+title: %<%Y-%m-%d> - Louise\n"))
+     ("m" "martin" entry "* %<%I:%M %p>:\n %?"
+      :if-new (file+head "%<%Y-%m-%d> - Martin.org" "#+title: %<%Y-%m-%d> - Louise\n"))
+     ("f" "frankie" entry "* %<%I:%M %p>:\n %?"
+      :if-new (file+head "%<%Y-%m-%d> - Frankie.org" "#+title: %<%Y-%m-%d> - Louise\n"))
      )
    )
-   ;:config
-   ;(require 'org-roam-dailies) ;; Ensure the keymap is available -- keeps timing out
+   :config
+   (require 'org-roam-dailies) ;; Ensure the keymap is available -- keeps timing out
    ;(org-roam-db-autosync-mode)
    )
 #+end_src
 
 #+RESULTS:
 : org-roam-dailies-capture-yesterday
+
 
 * Virtualenvwrapper
 #+begin_src emacs-lisp
