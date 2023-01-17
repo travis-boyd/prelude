@@ -1,5 +1,12 @@
 * Visual Tweaks
 
+#+begin_src emacs-lisp
+  (set-language-environment "UTF-8")
+#+end_src
+
+#+RESULTS:
+: t
+
 word wrap everywhere! until I learn the hard way why it's not default
 #+begin_src emacs-lisp
   (global-visual-line-mode t)
