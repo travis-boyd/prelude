@@ -4,9 +4,12 @@
   (set-language-environment "UTF-8")
 #+end_src
 
-#+RESULTS:
-: t
-
+Font setup
+#+begin_src emacs-lisp
+  (custom-set-faces
+   '(default ((t (:height 110 :family "Inconsolata"))))
+   )
+#+end_src
 word wrap everywhere! until I learn the hard way why it's not default
 #+begin_src emacs-lisp
   (global-visual-line-mode t)
