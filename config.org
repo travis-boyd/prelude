@@ -35,6 +35,7 @@ Replaces all headlines markers with fancy Unicode bullets
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
 
+
 * ORG-ROAM
 #+begin_src emacs-lisp
   (use-package org-roam
@@ -91,8 +92,166 @@ Replaces all headlines markers with fancy Unicode bullets
   (setq venv-location '("d:/Code/whisper/venv/"))
 #+end_src
 
+
 * Circe
 #+begin_src emacs-lisp
   (require 'circe)
   (setq circe-network-options ' (("Bitlbee" :nick "trav")))
 #+end_src
+
+
+* Hydras
+
+[[https://github.com/abo-abo/hydra][Hydra]] is a method to customize personal and visual menus to summarize
+various functionality.
+
+------------
+
+Please note: =:color red= is for repeating actions, =:color blue= for
+one-time actions. From [[https://github.com/abo-abo/hydra][the web site]]:
+
+#+BEGIN_QUOTE
+The =:color= key is a shortcut. It aggregates =:exit= and
+=:foreign-keys= key in the following way:
+
+| color    | toggle                     |
+|----------+----------------------------|
+| red      | stay                       |
+| blue     | :exit t                    |
+| amaranth | :foreign-keys warn         |
+| teal     | :foreign-keys warn :exit t |
+| pink     | :foreign-keys run          |
+#+END_QUOTE
+
+** Start of hydra
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra
+    :ensure t
+    :defer 90
+    :config ;; executed after loading package
+#+END_SRC
+
+** apropos -> =C-c h=
+
+Example 10 from hydra-examples.el
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-apropos (:color blue
+                           :hint nil)
+    "
+  _a_propos        _c_ommand
+  _d_ocumentation  _l_ibrary
+  _v_ariable       _u_ser-option
+  ^ ^       valu_e_"
+    ("a" apropos)
+    ("d" apropos-documentation)
+    ("v" apropos-variable)
+    ("c" apropos-command)
+    ("l" apropos-library)
+    ("u" apropos-user-option)
+    ("e" apropos-value))
+  ;; Recommended binding:
+  (global-set-key (kbd "C-c h") 'hydra-apropos/body)
+#+END_SRC
+
+** example 11: rectangle-mark-mode
+#+begin_src emacs-lisp
+  ;;** Example 11: rectangle-mark-mode
+  (require 'rect)
+  (defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
+                                       :color pink
+                                       :post (deactivate-mark))
+    "
+    ^_k_^     _d_elete    _s_tring
+  _h_   _l_   _o_k        _y_ank
+    ^_j_^     _n_ew-copy  _r_eset
+  ^^^^        _e_xchange  _u_ndo
+  ^^^^        ^ ^         _x_kill
+  "
+    ("h" rectangle-backward-char nil)
+    ("l" rectangle-forward-char nil)
+    ("k" rectangle-previous-line nil)
+    ("j" rectangle-next-line nil)
+    ("e" hydra-ex-point-mark nil)
+    ("n" copy-rectangle-as-kill nil)
+    ("d" delete-rectangle nil)
+    ("r" (if (region-active-p)
+             (deactivate-mark)
+           (rectangle-mark-mode 1)) nil)
+    ("y" yank-rectangle nil)
+    ("u" undo nil)
+    ("s" string-rectangle nil)
+    ("x" kill-rectangle nil)
+    ("o" nil nil))
+
+  ;; Recommended binding:
+  (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
+
+#+end_src
+** example 12: org-agenda-view
+#+begin_src emacs-lisp
+  ;;** Example 12: org-agenda-view
+  (defun org-agenda-cts ()
+    (and (eq major-mode 'org-agenda-mode)
+         (let ((args (get-text-property
+                      (min (1- (point-max)) (point))
+                      'org-last-args)))
+           (nth 2 args))))
+
+  (defhydra hydra-org-agenda-view (:hint none)
+    "
+  _d_: ?d? day        _g_: time grid=?g?  _a_: arch-trees
+  _w_: ?w? week       _[_: inactive       _A_: arch-files
+  _t_: ?t? fortnight  _f_: follow=?f?     _r_: clock report=?r?
+  _m_: ?m? month      _e_: entry text=?e? _D_: include diary=?D?
+  _y_: ?y? year       _q_: quit           _L__l__c_: log = ?l?"
+    ("SPC" org-agenda-reset-view)
+    ("d" org-agenda-day-view (if (eq 'day (org-agenda-cts)) "[x]" "[ ]"))
+    ("w" org-agenda-week-view (if (eq 'week (org-agenda-cts)) "[x]" "[ ]"))
+    ("t" org-agenda-fortnight-view (if (eq 'fortnight (org-agenda-cts)) "[x]" "[ ]"))
+    ("m" org-agenda-month-view (if (eq 'month (org-agenda-cts)) "[x]" "[ ]"))
+    ("y" org-agenda-year-view (if (eq 'year (org-agenda-cts)) "[x]" "[ ]"))
+    ("l" org-agenda-log-mode (format "% -3S" org-agenda-show-log))
+    ("L" (org-agenda-log-mode '(4)))
+    ("c" (org-agenda-log-mode 'clockcheck))
+    ("f" org-agenda-follow-mode (format "% -3S" org-agenda-follow-mode))
+    ("a" org-agenda-archives-mode)
+    ("A" (org-agenda-archives-mode 'files))
+    ("r" org-agenda-clockreport-mode (format "% -3S" org-agenda-clockreport-mode))
+    ("e" org-agenda-entry-text-mode (format "% -3S" org-agenda-entry-text-mode))
+    ("g" org-agenda-toggle-time-grid (format "% -3S" org-agenda-use-time-grid))
+    ("D" org-agenda-toggle-diary (format "% -3S" org-agenda-include-diary))
+    ("!" org-agenda-toggle-deadlines)
+    ("[" (let ((org-agenda-include-inactive-timestamps t))
+           (org-agenda-check-type t 'timeline 'agenda)
+           (org-agenda-redo)
+           (message "Display now includes inactive timestamps as well")))
+    ("q" (message "Abort") :exit t)
+    ("v" nil))
+
+  ;; Recommended binding:
+    (define-key org-agenda-mode-map "v" 'hydra-org-agenda-view/body)
+#+end_src
+
+#+RESULTS:
+: hydra-org-agenda-view/body
+
+** example 13: automatic columns
+#+begin_src emacs-lisp
+  ;;** Example 13: automatic columns
+  (defhydra hydra-movement ()
+    ("j" next-line "down" :column "Vertical")
+    ("k" previous-line "up")
+    ("l" forward-char "forward" :column "Horizontal")
+    ("h" backward-char "back"))
+
+#+end_src
+
+#+RESULTS:
+: hydra-movement/body
+
+** End of hydra
+
+#+BEGIN_SRC emacs-lisp
+);; end of hydra
+
+#+END_SRC
