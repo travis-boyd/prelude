@@ -36,6 +36,16 @@ Replaces all headlines markers with fancy Unicode bullets
 #+end_src
 
 
+* MobileOrg
+#+begin_src emacs-lisp
+  (setq org-directory "C:/Users/Travis/org-mode")
+  (setq org-mobile-inbox-for-pull "C:/Users/Travis/org-mode/flagged.org")
+  (setq org-mobile-directory "c:/Users/Travis/Dropbox/Apps/MobileOrg")
+#+end_src
+
+#+RESULTS:
+: c:/Users/Travis/Dropbox/Apps/MobileOrg
+
 * ORG-ROAM
 #+begin_src emacs-lisp
   (use-package org-roam
@@ -255,3 +265,7 @@ Example 10 from hydra-examples.el
 );; end of hydra
 
 #+END_SRC
+
+
+
+* TODO fix custom-file.el
