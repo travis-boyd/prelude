@@ -65,7 +65,35 @@ Replaces all headlines markers with fancy Unicode bullets
 #+end_src
 
 
+* Babel
+** load languages
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((C . t)
+     (python . t)
+     ))
+#+end_src
+
+
+* ledger
+#+begin_src emacs-lisp
+  (use-package ledger-mode
+
+    :ensure t
+
+    :config
+
+    (require 'ledger-mode))
+#+end_src
+
+#+RESULTS:
+: t
+
+
+
 * MobileOrg
+** Initialization
 #+begin_src emacs-lisp
   (setq org-directory "C:/Users/Travis/org-mode")
   (setq org-mobile-inbox-for-pull "C:/Users/Travis/org-mode/flagged.org")
