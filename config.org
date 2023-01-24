@@ -75,54 +75,103 @@ Replaces all headlines markers with fancy Unicode bullets
 #+RESULTS:
 : c:/Users/Travis/Dropbox/Apps/MobileOrg
 
-* ORG-ROAM
+
+** Windows-only initialization
+checksum program =sha1sum=
 #+begin_src emacs-lisp
-  (use-package org-roam
-  :ensure t
-  :bind (("C-c m l" . org-roam-buffer-toggle)
-         ("C-c m f" . org-roam-node-find)
-         ("C-c m g" . org-roam-graph)
-         ("C-c m i" . org-roam-node-insert)
-         ("C-c m c" . org-roam-capture)
-         ("C-c m o" . org-id-get-create)
-         ;; Dailies
-         :map org-mode-map
-         ("C-M-g" . completion-at-point)
-         :map org-roam-dailies-map
-         ("Y" . org-roam-dailies-capture-yesterday))
-  :bind-keymap
-  ("C-c m d" . org-roam-dailies-map)
-  :custom
-  (org-roam-capture-templates
-   '(("d" "default" plain
-      "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S> - ${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("p" "project" plain
-      "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S> - ${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
-      :unnarrowed t)
-     )
-   )
-  (org-roam-dailies-capture-templates
-   '(("d" "default" entry "* %<%I:%M %p>:\n %?"
-      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
-     ("l" "louise" entry "* %<%I:%M %p>:\n %?"
-      :if-new (file+head "%<%Y-%m-%d> - Louise.org" "#+title: %<%Y-%m-%d> - Louise\n"))
-     ("m" "martin" entry "* %<%I:%M %p>:\n %?"
-      :if-new (file+head "%<%Y-%m-%d> - Martin.org" "#+title: %<%Y-%m-%d> - Louise\n"))
-     ("f" "frankie" entry "* %<%I:%M %p>:\n %?"
-      :if-new (file+head "%<%Y-%m-%d> - Frankie.org" "#+title: %<%Y-%m-%d> - Louise\n"))
-     )
-   )
-   :config
-   (require 'org-roam-dailies) ;; Ensure the keymap is available -- keeps timing out
-   ;(org-roam-db-autosync-mode)
+  (if (my-system-type-is-windows)
+      (defcustom org-mobile-checksum-binary (file-truename "C:/Users/Travis/scoop/apps/msys2/2022-10-28/usr/bin/sha1sum.exe")
+        "Executable used for computing checksums of agenda files."
+        :group 'org-mobile
+        :type 'string)
+    )
+#+end_src
+
+#+RESULTS:
+: org-mobile-checksum-binary
+
+
+* ORG-ROAM
+** OS-specific initializations
+#+begin_src emacs-lisp
+  (if (my-system-type-is-windows)
+      (use-package org-roam
+        :custom
+        (org-roam-directory (file-truename "C:/Users/Travis/org-mode/org-roam/"))
+        (org-roam-db-location (expand-file-name (concat "org-roam." "windows" ".db") org-roam-directory))
+        )
+      )
+#+end_src
+
+
+** use-package
+#+begin_src emacs-lisp
+      (use-package org-roam
+      :ensure t
+      :bind (("C-c m l" . org-roam-buffer-toggle)
+             ("C-c m f" . org-roam-node-find)
+             ("C-c m g" . org-roam-graph)
+             ("C-c m i" . org-roam-node-insert)
+             ("C-c m c" . org-roam-capture)
+             ("C-c m o" . org-id-get-create)
+             ;; Dailies
+             :map org-mode-map
+             ("C-M-g" . completion-at-point)
+             :map org-roam-dailies-map
+             ("Y" . org-roam-dailies-capture-yesterday))
+      :bind-keymap
+      ("C-c m d" . org-roam-dailies-map)
+      :custom
+      (org-roam-dailies-capture-templates
+       '(("d" "default" entry "* %<%I:%M %p>:\n %?"
+          :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
+         ("l" "louise" entry "* %<%I:%M %p>:\n %?"
+          :if-new (file+head "%<%Y-%m-%d> - Louise.org" "#+title: %<%Y-%m-%d> - Louise\n"))
+         ("m" "martin" entry "* %<%I:%M %p>:\n %?"
+          :if-new (file+head "%<%Y-%m-%d> - Martin.org" "#+title: %<%Y-%m-%d> - Louise\n"))
+         ("f" "frankie" entry "* %<%I:%M %p>:\n %?"
+          :if-new (file+head "%<%Y-%m-%d> - Frankie.org" "#+title: %<%Y-%m-%d> - Louise\n"))
+         )
+       )
+       :config
+       (require 'org-roam-dailies) ;; Ensure the keymap is available -- keeps timing out
+       (org-roam-db-autosync-mode)
+       )
+#+end_src
+
+** capture-templates
+#+begin_src emacs-lisp
+  (setq org-roam-capture-templates
+        '(("d" "default" plain
+           "%?"
+           :if-new (file+head "%<%Y%m%d%H%M%S> - ${slug}.org"
+                              "#+title: ${title}\n")
+           :unnarrowed t
+           )
+          ("p" "project" plain
+           "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+           :if-new (file+head "%<%Y%m%d%H%M%S> - ${slug}.org"
+                              "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+           :unnarrowed t
+           )
+          ("l" "literature" plain
+           "%?"
+           :if-new (file+head "%<%Y%m%d%H%M%S> - ${slug}.org"
+                              "#+title: ${title}\n")
+           :unnarrowed t
+           )
+          ("t" "todo" plain
+           "\n\n** TODO ${title}\n:PROPERTIES:\n:OPENED: %T\n%?"
+           :target (file+olp "Todo List.org"
+                             ("Todo Items"))
+           :unarrowed t
+           )
+          )
    )
 #+end_src
 
 #+RESULTS:
-: org-roam-dailies-capture-yesterday
+| d | default | plain | %? | :if-new | (file+head %<%Y%m%d%H%M%S> - ${slug}.org #+title: ${title} |
 
 
 * Virtualenvwrapper
