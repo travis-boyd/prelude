@@ -1,3 +1,32 @@
+#+TODO: TODO | DISABLED
+* introduction
+
+The =emacs-lisp= snippets in this org file are wrangled into config.init
+
+** Ideas and goals
+
+*** TODO customize the locations of emacs saved logs, history, undo trees etc
+
+
+* System-specific init
+define functions to identify which computer the code is running on
+#+begin_src emacs-lisp
+  ;; Check if system is Microsoft Windows
+  (defun my-system-type-is-windows ()
+    "Return true if system is Windows-based (at least up to Win7)"
+    (string-equal system-type "windows-nt")
+    )
+  ;; Check if system is Darwin/Mac OS X
+  (defun my-system-type-is-darwin ()
+    "Return true if system is darwin-based (Mac OS X)"
+    (string-equal system-type "darwin")
+    )
+#+end_src
+
+#+RESULTS:
+: my-system-type-is-darwin
+
+
 * Visual Tweaks
 
 #+begin_src emacs-lisp
