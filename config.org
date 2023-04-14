@@ -36,9 +36,10 @@ define functions to identify which computer the code is running on
 Font setup
 #+begin_src emacs-lisp
   (custom-set-faces
-   '(default ((t (:height 110 :family "Inconsolata"))))
+   '(default ((t (:height 120 :family "Inconsolata"))))
    )
 #+end_src
+
 word wrap everywhere! until I learn the hard way why it's not default
 #+begin_src emacs-lisp
   (global-visual-line-mode t)
