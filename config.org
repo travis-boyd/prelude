@@ -176,7 +176,7 @@ checksum program =sha1sum=
         '(("d" "default" plain
            "%?"
            :if-new (file+head "%<%Y%m%d%H%M%S> - ${slug}.org"
-                              "#+title: ${title}\n")
+                              "#+title: ${title}\n#+date: %T\nTime-stamp: <>")
            :unnarrowed t
            )
           ("p" "project" plain
