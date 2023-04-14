@@ -77,7 +77,9 @@ Replaces all headlines markers with fancy Unicode bullets
 #+end_src
 
 
-* ledger
+
+
+* DISABLED ledger
 #+begin_src emacs-lisp
   (use-package ledger-mode
 
