@@ -66,6 +66,55 @@ Replaces all headlines markers with fancy Unicode bullets
 #+end_src
 
 
+* Playground - trying out temporary stuff
+
+** multiple cursors
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :ensure   t
+    :bind (("H-SPC" . set-rectangular-region-anchor)
+           ("C-M-SPC" . set-rectangular-region-anchor)
+           ("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-c C->" . mc/mark-all-like-this)
+           ("C-c C-SPC" . mc/edit-lines)
+           ))
+#+end_src
+
+#+RESULTS:
+: mc/edit-lines
+
+** org-ai
+#+begin_src emacs-lisp
+  (use-package org-ai
+    :load-path (lambda () "c:/Users/Travis/temp/org-ai")
+    :commands (org-ai-mode)
+    :custom
+    (org-ai-openai-api-token "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")
+    :init
+    (add-hook 'org-mode-hook #'org-ai-mode)
+    :config
+    (advice-add 'keyboard-quit :before #'org-ai-keyboard-quit))
+#+end_src
+
+#+RESULTS:
+: t
+
+** timestamps
+*** enable
+#+begin_src emacs-lisp
+  (setq
+   time-stamp-active t          ; do enable time-stamps
+   time-stamp-line-limit 10     ; check first 10 buffer lines for Time-stamp:
+   time-stamp-format "%Y-%02m-%02d %02H:%02M:%02S (%u)") ; date format
+#+end_src
+
+
+*** hook for file_save
+#+begin_src emacs-lisp
+  (add-hook 'write-file-hooks 'time-stamp) ; update when saving
+#+end_src
+
 * Babel
 ** load languages
 #+begin_src emacs-lisp
