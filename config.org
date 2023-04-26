@@ -36,10 +36,19 @@ define functions to identify which computer the code is running on
 Font setup
 #+begin_src emacs-lisp
   (custom-set-faces
+<<<<<<< HEAD
    '(default ((t (:height 120 :family "Inconsolata"))))
    )
 #+end_src
 
+=======
+   '(default ((t (:height 200 :family "Inconsolata"))))
+   )
+#+end_src
+
+#+RESULTS:
+
+>>>>>>> 0ab8cc4 (added rust to babel)
 word wrap everywhere! until I learn the hard way why it's not default
 #+begin_src emacs-lisp
   (global-visual-line-mode t)
@@ -122,8 +131,11 @@ Replaces all headlines markers with fancy Unicode bullets
    'org-babel-load-languages
    '((C . t)
      (python . t)
+     (rust . t)
      ))
 #+end_src
+
+#+RESULTS:
 
 
 
