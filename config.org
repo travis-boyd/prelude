@@ -221,7 +221,7 @@ checksum program =sha1sum=
      ("g" "maggi" entry "* %<%I:%M %p>:\n %?"
       :if-new (file+head "%<%Y-%m-%d> - Maggi.org" "#+title: %<%Y-%m-%d> - Maggi\n"))
      ("o" "movie" entry "* %^{Movie Title} (%^{Year Released}) %T"
-      :if-new (file+head "movies.org" "#+title: Movies\n%?"))
+      :if-new (file+head "movie-list.org" "#+title: Movies\n%?"))
      )
    )
    :config
